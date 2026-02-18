@@ -29,14 +29,23 @@ document.getElementById('float-assist').addEventListener('click', async () => {
         if (isCode) {
             const model = await self.LanguageModel.create({
                 systemPrompt: "You are a competitive programming assistant. Provide only the most efficient code solution. No talk.",
-                outputLanguage: 'en'
+                outputLanguage: 'en',
+                expectedOutputLanguage: 'en'
             });
             const result = await model.prompt(`Problem: ${currentData.body}`);
             output.innerText = result;
         } else {
-            const summarizer = await self.Summarizer.create({ type: 'teaser', length: 'short' });
-            const result = await summarizer.summarize(currentData.body);
-            output.innerText = result;
+            const summarizer = await self.Summarizer.create({
+                type: 'teaser',
+                length: 'short',
+                outputLanguage: 'en',
+                expectedOutputLanguage: 'en'
+            });
+            const stream = summarizer.summarizeStreaming(currentData.body);
+            output.innerText = '';
+            for await (const chunk of stream) {
+                output.innerText = chunk;
+            }
         }
     } catch (e) {
         output.innerText = "Error: " + e.message;

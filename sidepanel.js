@@ -18,6 +18,9 @@ const codeLangSelect = document.getElementById('code-lang-select');
 const codeOutput = document.getElementById('code-output');
 
 const popoutBtn = document.getElementById('popout-btn');
+const previewEl = document.getElementById('email-preview');
+const previewSubject = document.getElementById('preview-subject');
+const previewBody = document.getElementById('preview-body');
 
 // --- Init ---
 checkAIAvailability();
@@ -53,7 +56,9 @@ async function checkAIAvailability() {
     }
 
     try {
-        const availability = await self.Summarizer.availability();
+        const availability = await self.Summarizer.availability({
+            outputLanguage: 'en'
+        });
         if (availability === 'after-download' || availability === 'downloadable') {
             aiStatus.textContent = 'Model Pending';
             aiStatus.title = 'The AI model needs to be downloaded in Chrome settings or components.';
@@ -120,7 +125,9 @@ async function handleSummarize() {
         } else {
             try {
                 // Check availability first as per docs
-                const availability = await self.Summarizer.availability();
+                const availability = await self.Summarizer.availability({
+                    outputLanguage: 'en'
+                });
                 if (availability === 'no' || availability === 'unavailable') {
                     throw new Error('Summarizer API is not available on this device.');
                 }
@@ -131,6 +138,7 @@ async function handleSummarize() {
                     format: 'plain-text',
                     length: 'short',
                     outputLanguage: 'en',
+                    expectedOutputLanguage: 'en',
                     monitor(m) {
                         m.addEventListener('downloadprogress', (e) => {
                             const progress = Math.round((e.loaded / e.total) * 100);
@@ -183,7 +191,8 @@ async function handleSmartReply() {
             result = "Hi,\n\nI've received your update regarding the Q3 launch. I will prioritize the technical documentation review and sync with the design team. Thanks!";
         } else {
             const model = await self.LanguageModel.create({
-                outputLanguage: 'en'
+                outputLanguage: 'en',
+                expectedOutputLanguage: 'en'
             });
             result = await model.prompt(`Draft a professional reply to this email: ${currentEmail.body}`);
         }
@@ -215,7 +224,8 @@ async function handleTranslate() {
             } catch (transError) {
                 console.warn('Translator API failed, falling back to Prompt API:', transError);
                 const model = await self.LanguageModel.create({
-                    outputLanguage: lang
+                    outputLanguage: lang,
+                    expectedOutputLanguage: lang
                 });
                 result = await model.prompt(`Translate the following to ${lang}:\n\n${currentEmail.body}`);
             }
@@ -241,7 +251,8 @@ async function handleWriteCode() {
         } else {
             const model = await self.LanguageModel.create({
                 systemPrompt: `You are an expert ${lang} developer. Write clean, efficient, and well-commented code based on the problem statement provided. Output ONLY the code without any explanation.`,
-                outputLanguage: 'en'
+                outputLanguage: 'en',
+                expectedOutputLanguage: 'en'
             });
             result = await model.prompt(`Problem Statement: ${currentEmail.body}\n\nLanguage: ${lang}\n\nCode:`);
         }
