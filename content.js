@@ -21,23 +21,26 @@ function extractEmailData() {
             body = bodies[bodies.length - 1].innerText;
         }
     }
-    // Outlook specific
-    else if (window.location.hostname.includes('outlook')) {
-        const subjectEl = document.querySelector('div[role="heading"][aria-level="2"]');
+    // Outlook specific (handles outlook.com, office.com, etc.)
+    else if (window.location.hostname.includes('outlook') || window.location.hostname.includes('office')) {
+        const subjectEl = document.querySelector('div[role="heading"][aria-level="2"]') ||
+            document.querySelector('[data-automation-id="DetailsHeaderSubject"]');
         if (subjectEl) subject = subjectEl.innerText;
 
-        const bodyEl = document.querySelector('div[aria-label="Message body"]');
+        const bodyEl = document.querySelector('div[aria-label="Message body"]') ||
+            document.querySelector('.ReadingPaneContainer');
         if (bodyEl) body = bodyEl.innerText;
     }
     // LeetCode specific
     else if (window.location.hostname.includes('leetcode.com')) {
-        // New UI selectors (2024/2025)
         const titleEl = document.querySelector('div[data-cy="question-title"]') || document.querySelector('.text-title-large');
         if (titleEl) subject = titleEl.innerText;
 
         const descriptionEl = document.querySelector('[data-track-load="description_content"]') || document.querySelector('.elfjS');
         if (descriptionEl) body = descriptionEl.innerText;
     }
+
+    console.log('Extraction results:', { subject, bodyLength: body.length });
 
     // Fallback: search for prominent text if providers don't match exactly
     if (!body) {

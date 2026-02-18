@@ -10,7 +10,9 @@
     ],
     "host_permissions": [
         "https://mail.google.com/*",
-        "https://outlook.live.com/*",
+        "https://*.outlook.com/*",
+        "https://outlook.office.com/*",
+        "https://outlook.office365.com/*",
         "https://leetcode.com/*"
     ],
     "background": {
@@ -26,7 +28,9 @@
         {
             "matches": [
                 "https://mail.google.com/*",
-                "https://outlook.live.com/*",
+                "https://*.outlook.com/*",
+                "https://outlook.office.com/*",
+                "https://outlook.office365.com/*",
                 "https://leetcode.com/*"
             ],
             "js": [

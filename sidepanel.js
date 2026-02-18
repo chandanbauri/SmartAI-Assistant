@@ -103,7 +103,12 @@ async function syncWithPage() {
         }
     } catch (err) {
         console.error('Failed to sync:', err);
-        alert('Could not sync with page. Make sure you are on Gmail or Outlook and have refreshed the page after installing the extension.');
+        // This specific error happens when the extension is reloaded but the page hasn't been refreshed
+        if (err.message.includes('Could not establish connection')) {
+            alert('Extension updated! Please REFRESH your Gmail/Outlook/LeetCode tab to reconnect the AI assistant.');
+        } else {
+            alert('Sync failed: ' + err.message);
+        }
     }
 }
 
