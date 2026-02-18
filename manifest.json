@@ -10,10 +10,13 @@
     ],
     "host_permissions": [
         "https://mail.google.com/*",
+        "https://mail.google.co.uk/*",
+        "https://mail.google.co.in/*",
         "https://*.outlook.com/*",
-        "https://outlook.office.com/*",
-        "https://outlook.office365.com/*",
-        "https://leetcode.com/*"
+        "https://*.office.com/*",
+        "https://*.office365.com/*",
+        "https://leetcode.com/*",
+        "https://*.leetcode.com/*"
     ],
     "background": {
         "service_worker": "service-worker.js"
@@ -28,10 +31,13 @@
         {
             "matches": [
                 "https://mail.google.com/*",
+                "https://mail.google.co.uk/*",
+                "https://mail.google.co.in/*",
                 "https://*.outlook.com/*",
-                "https://outlook.office.com/*",
-                "https://outlook.office365.com/*",
-                "https://leetcode.com/*"
+                "https://*.office.com/*",
+                "https://*.office365.com/*",
+                "https://leetcode.com/*",
+                "https://*.leetcode.com/*"
             ],
             "js": [
                 "content.js"

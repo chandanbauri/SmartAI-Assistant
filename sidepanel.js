@@ -90,7 +90,25 @@ async function syncWithPage() {
     if (!tab) return;
 
     try {
-        const response = await chrome.tabs.sendMessage(tab.id, { action: 'GET_EMAIL_CONTENT' });
+        let response;
+        try {
+            response = await chrome.tabs.sendMessage(tab.id, { action: 'GET_EMAIL_CONTENT' });
+        } catch (msgErr) {
+            // If connection fails, try to inject the script manually (Auto-Repair)
+            if (msgErr.message.includes('Could not establish connection')) {
+                console.log('Content script missing. Attempting auto-injection...');
+                await chrome.scripting.executeScript({
+                    target: { tabId: tab.id },
+                    files: ['content.js']
+                });
+                // Delay slightly for script initialization
+                await new Promise(r => setTimeout(r, 200));
+                response = await chrome.tabs.sendMessage(tab.id, { action: 'GET_EMAIL_CONTENT' });
+            } else {
+                throw msgErr;
+            }
+        }
+
         if (response) {
             currentEmail = response;
             previewEl.style.display = 'block';
@@ -102,13 +120,8 @@ async function syncWithPage() {
             }, 2000);
         }
     } catch (err) {
-        console.error('Failed to sync:', err);
-        // This specific error happens when the extension is reloaded but the page hasn't been refreshed
-        if (err.message.includes('Could not establish connection')) {
-            alert('Extension updated! Please REFRESH your Gmail/Outlook/LeetCode tab to reconnect the AI assistant.');
-        } else {
-            alert('Sync failed: ' + err.message);
-        }
+        console.error('Final sync attempt failed:', err);
+        alert('Sync failed. Please ensure you are on a supported page (Gmail/Outlook/LeetCode) and refresh the page if this persists.');
     }
 }
 
