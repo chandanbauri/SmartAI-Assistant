@@ -149,7 +149,13 @@
 <body>
     <div class="header">
         <div class="logo"><i class="fa-solid fa-wand-magic-sparkles"></i> Smart Assistant</div>
-        <span id="ai-status" class="status-badge">Ready</span>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <button id="popout-btn" title="Open Ghost Assistant"
+                style="background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 2px 5px;">
+                <i class="fa-solid fa-up-right-from-square"></i>
+            </button>
+            <span id="ai-status" class="status-badge">Ready</span>
+        </div>
     </div>
 
     <div id="sync-btn" class="sync-panel">

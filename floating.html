@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ghost Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --primary: #6366f1;
+            --text: #f8fafc;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 10px;
+            overflow-x: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            -webkit-app-region: drag;
+            /* Makes window draggable */
+            cursor: move;
+        }
+
+        .ai-output {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 0.85rem;
+            min-height: 100px;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            color: #94a3b8;
+        }
+
+        .controls {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            flex: 1;
+        }
+
+        .btn:hover {
+            background: #4f46e5;
+        }
+
+        .ghost-mode {
+            opacity: 0.4;
+            transition: opacity 0.3s;
+        }
+
+        .ghost-mode:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="ghost-mode">
+    <div class="header">
+        <span><i class="fa-solid fa-ghost"></i> Ghost Assistant</span>
+        <i id="sync-indicator" class="fa-solid fa-circle-dot" style="color: #64748b;"></i>
+    </div>
+    <div id="output" class="ai-output">Ready to assist quietly...</div>
+    <div class="controls">
+        <button id="float-sync" class="btn"><i class="fa-solid fa-arrows-rotate"></i> Sync</button>
+        <button id="float-assist" class="btn"><i class="fa-solid fa-brain"></i> Solve</button>
+    </div>
+    <script src="floating.js"></script>
+</body>
+
+</html>

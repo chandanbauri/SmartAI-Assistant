@@ -17,9 +17,7 @@ const codeBtn = document.getElementById('code-btn');
 const codeLangSelect = document.getElementById('code-lang-select');
 const codeOutput = document.getElementById('code-output');
 
-const previewEl = document.getElementById('email-preview');
-const previewSubject = document.getElementById('preview-subject');
-const previewBody = document.getElementById('preview-body');
+const popoutBtn = document.getElementById('popout-btn');
 
 // --- Init ---
 checkAIAvailability();
@@ -29,6 +27,16 @@ summarizeBtn.addEventListener('click', handleSummarize);
 replyBtn.addEventListener('click', handleSmartReply);
 translateBtn.addEventListener('click', handleTranslate);
 codeBtn.addEventListener('click', handleWriteCode);
+
+popoutBtn.addEventListener('click', () => {
+    chrome.windows.create({
+        url: 'floating.html',
+        type: 'popup',
+        width: 350,
+        height: 500,
+        focused: true
+    });
+});
 
 async function checkAIAvailability() {
     const isSummarizerAvailable = 'Summarizer' in self;
