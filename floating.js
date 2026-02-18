@@ -5,7 +5,23 @@ document.getElementById('float-sync').addEventListener('click', async () => {
     if (!tab) return alert('Cannot find main browser tab.');
 
     try {
-        const response = await chrome.tabs.sendMessage(tab.id, { action: 'GET_EMAIL_CONTENT' });
+        let response;
+        try {
+            response = await chrome.tabs.sendMessage(tab.id, { action: 'GET_EMAIL_CONTENT' });
+        } catch (msgErr) {
+            // Auto-Repair for Floating Window
+            if (msgErr.message.includes('Could not establish connection')) {
+                await chrome.scripting.executeScript({
+                    target: { tabId: tab.id },
+                    files: ['content.js']
+                });
+                await new Promise(r => setTimeout(r, 200));
+                response = await chrome.tabs.sendMessage(tab.id, { action: 'GET_EMAIL_CONTENT' });
+            } else {
+                throw msgErr;
+            }
+        }
+
         if (response) {
             currentData = response;
             document.getElementById('sync-indicator').style.color = '#10b981';
@@ -13,7 +29,7 @@ document.getElementById('float-sync').addEventListener('click', async () => {
         }
     } catch (e) {
         console.error(e);
-        alert('Failed to sync. Ensure the tab is active.');
+        alert('Sync failed. Please ensure you have the Gmail/Outlook/LeetCode tab active and visible behind this window.');
     }
 });
 
