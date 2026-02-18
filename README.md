@@ -1,24 +1,46 @@
-# Smart AI Email Assistant - Chrome Extension
+# Smart AI Assistant 🪄
 
-This extension integrates Chrome's Built-in AI APIs directly into your browser, allowing you to summarize, reply, and translate emails in Gmail and Outlook.
+A powerful Chrome Extension that brings Google's **Gemini Nano** directly into your browsing experience. Originally designed for emails, it has evolved into a versatile assistant that handles everything from professional correspondence to competitive programming.
 
-## 🚀 Features
-- **Gmail & Outlook Integration**: Scrapes the current email content automatically.
-- **AI Side Panel**: A persistent UI that stays open as you navigate.
-- **Summarization**: Powered by Chrome's `Summarizer` API.
-- **Smart Replies**: Powered by Chrome's `LanguageModel` API.
-- **Translation**: Powered by Chrome's `Translator` API.
+## 🚀 Key Features
 
-## 🛠️ How to Load the Extension
-1. Open Chrome and go to `chrome://extensions/`.
-2. Enable **Developer mode** (toggle in the top right).
+- **📧 Email Intelligence**: 
+  - **Summarize**: Instantly distill long Gmail or Outlook threads into concise bullet points.
+  - **Smart Reply**: Draft professional, context-aware replies in seconds.
+  - **Translate**: Break language barriers with built-in translation (Spanish, French, Japanese, and more).
+- **💻 Coding Assistant (LeetCode Support)**:
+  - **Write Code**: Extracts problem statements directly from **LeetCode** and generates optimized solutions in Python, JavaScript, Java, C++, or SQL.
+  - **Context-Aware**: Uses the problem title and description to provide accurate, commented code.
+- **⚡ Real-time Performance**:
+  - Uses `Summarizer.summarizeStreaming` for instant word-by-word feedback.
+  - Interactive "Mercury" status badge showing model download progress.
+
+## 🛠️ Installation
+
+1. Open Chrome and navigate to `chrome://extensions/`.
+2. Enable **Developer mode** in the top-right corner.
 3. Click **Load unpacked**.
-4. Select the `/Users/chandanbauri/work/AI/SmartEmailExtension` folder.
+4. Select the `SmartEmailExtension` folder from your local machine.
 
-## ⚙️ Requirements
-To use the real AI APIs, you must enable these flags in **Chrome Dev/Canary**:
-- `chrome://flags/#optimization-guide-on-device-model` -> **Enabled (BypassPerfRequirement)**
-- `chrome://flags/#prompt-api-for-gemini-nano` -> **Enabled**
-- `chrome://flags/#summarization-api-for-gemini-nano` -> **Enabled**
+## ⚙️ Enabling Built-in AI (Required)
 
-If these are not enabled, the extension will run in **Demo Mode** with simulated responses.
+To use the non-simulated Gemini Nano features, you must enable these flags in Chrome (v131+):
+
+1. **AI Foundation**: `chrome://flags/#optimization-guide-on-device-model` → Set to **Enabled BypassPrefRequirement**.
+2. **Prompt API**: `chrome://flags/#prompt-api-for-gemini-nano` → Set to **Enabled**.
+3. **Summarizer API**: `chrome://flags/#summarizer-api-for-gemini-nano` → Set to **Enabled**.
+4. **Restart Chrome** completely.
+5. **Download Models**: Go to `chrome://components/` and check for updates on 'Optimization Guide On Device Model'.
+
+*Note: If flags are missing, the extension automatically falls back to a high-fidelity **Demo Mode**.*
+
+## 📂 Project Structure
+
+- `manifest.json`: Extension configuration and permissions.
+- `sidepanel.html`: The modern, dark-themed assistant interface.
+- `sidepanel.js`: Core AI orchestration and state management.
+- `content.js`: Intelligent scrapers for Gmail, Outlook, and LeetCode.
+- `service-worker.js`: Background script for side panel activation.
+
+---
+Built with ❤️ using Chrome's Built-in AI APIs.
